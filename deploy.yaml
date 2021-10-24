@@ -1,0 +1,14 @@
+---
+- name: Deploy
+  hosts: 18.223.30.66
+  remote_user: ubuntu
+  tasks:
+  - name: Pull default Docker image
+    docker_image:
+      name: ccza/capstone
+
+  - name: Create default containers
+    docker_container:
+      name: capstone
+      image: ccza/capstone
+      state: started
