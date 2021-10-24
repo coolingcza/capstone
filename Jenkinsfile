@@ -40,11 +40,34 @@ pipeline {
         }
       }
     }
+    //stage('Test application in docker image') {
+    //  steps {
+    //    //sh 'sudo docker run -d -p 42006:8081 ccza/capstone'
+    //    //sh 'curl http://localhost:42006'
+    //    script {
+    //      final String url = "http://localhost:42006"
+    //      final String response = sh(script: "curl -s $url", returnStdout: true).trim()
+    //      echo response
+    //    }
+    //  }
+    //}
     stage('Push Docker image to Dockerhub') {
       steps{
         sh 'echo $DOCKERHUB_CREDENTIALS_PSW | sudo docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
         sh 'sudo docker push ccza/capstone:latest'
       }
+    }
+    stage('Deploy Docker image') {
+      steps{
+        dir("Infra") {
+          sh 'ansible-playbook deploy.yaml -i hosts'
+        }
+      }
+    }
+  }
+  post {
+    always {
+      sh 'docker logout'
     }
   }
 }
