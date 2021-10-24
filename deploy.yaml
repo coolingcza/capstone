@@ -1,6 +1,6 @@
 ---
 - name: Deploy
-  hosts: 18.223.30.66
+  hosts: docker
   remote_user: ubuntu
   tasks:
   - name: Pull default Docker image
