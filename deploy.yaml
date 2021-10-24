@@ -1,14 +1,13 @@
 ---
 - name: Deploy
   hosts: docker
-  remote_user: ubuntu
+  become: true
   tasks:
-  - name: Pull default Docker image
-    docker_image:
-      name: ccza/capstone
-
-  - name: Create default containers
+  - name: Deploy Docker image in container
     docker_container:
       name: capstone
-      image: ccza/capstone
       state: started
+      image: "ccza/capstone"
+      pull: true
+      ports:
+        - "8081:8081"
