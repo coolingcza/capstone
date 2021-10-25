@@ -9,7 +9,7 @@ pipeline {
         cleanWs deleteDirs: true
       }
     }
-    stage('Build WAR') {
+    stage('Build application') {
       steps {
         sh 'mkdir -p App'
         dir("App") {
@@ -47,12 +47,6 @@ pipeline {
         sh 'curl http://localhost:42006'
         sh 'sleep 5'
         sh 'sudo docker kill $(sudo docker ps -q)'
-        //try adding wait
-        //script {
-        //  final String url = "http://localhost:42006"
-        //  final String response = sh(script: "curl $url", returnStdout: true).trim()
-        //  echo response
-        //}
       }
     }
     stage('Push Docker image to Dockerhub') {
