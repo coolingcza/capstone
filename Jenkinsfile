@@ -40,17 +40,21 @@ pipeline {
         }
       }
     }
-    //stage('Test application in docker image') {
-    //  steps {
-    //    //sh 'sudo docker run -d -p 42006:8081 ccza/capstone'
-    //    //sh 'curl http://localhost:42006'
-    //    script {
-    //      final String url = "http://localhost:42006"
-    //      final String response = sh(script: "curl -s $url", returnStdout: true).trim()
-    //      echo response
-    //    }
-    //  }
-    //}
+    stage('Test application in docker image') {
+      steps {
+        sh 'sudo docker run -d -p 42006:8081 ccza/capstone'
+        sh 'sleep 5'
+        sh 'curl http://localhost:42006'
+        sh 'sleep 5'
+        sh 'sudo docker kill $(sudo docker ps -q)'
+        //try adding wait
+        //script {
+        //  final String url = "http://localhost:42006"
+        //  final String response = sh(script: "curl $url", returnStdout: true).trim()
+        //  echo response
+        //}
+      }
+    }
     stage('Push Docker image to Dockerhub') {
       steps{
         sh 'echo $DOCKERHUB_CREDENTIALS_PSW | sudo docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
